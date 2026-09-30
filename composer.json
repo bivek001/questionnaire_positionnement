@@ -1,0 +1,7 @@
+{
+    "require": {
+        "dompdf/dompdf": "*",
+        "phpmailer/phpmailer": "*",
+        "google/apiclient": "^2.20"
+    }
+}

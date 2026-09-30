@@ -1,0 +1,5 @@
+# Private configuration and dependency manifests are not public downloads.
+<FilesMatch "(?i)^(composer\.(json|lock)|README\.md|LISEZ_MOI\.md|PROJECT-MANIFEST\.json)$">
+    Require all denied
+</FilesMatch>
+Options -Indexes

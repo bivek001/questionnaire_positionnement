@@ -1,0 +1,38 @@
+/* Shared interface for trainee, professor and administrator pages. */
+:root{--ui-ink:#172b4d;--ui-muted:#52647b;--ui-line:#d8e1ec;--ui-primary:#245bc0;--ui-danger:#b42332;--ui-surface:#fff;--ui-bg:#f3f6fa;--ui-radius:12px}
+body{color:var(--ui-ink);background:var(--ui-bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+body .container,body .admin-container,body .page-container{width:min(1200px,calc(100% - 40px));max-width:1200px;margin:24px auto;padding:0}
+body header{background:var(--ui-surface);color:var(--ui-ink);border-bottom:1px solid var(--ui-line);box-shadow:none;padding:24px;border-radius:var(--ui-radius)}
+body header h1,body header h2,body header p{color:var(--ui-ink)}
+body h1{font-size:clamp(1.65rem,3vw,2.3rem);line-height:1.25;letter-spacing:-.025em}body h2{font-size:1.3rem;line-height:1.35}body h3{font-size:1.1rem}
+body p{overflow-wrap:anywhere}body a{color:var(--ui-primary)}body .text-muted,body .help-text,body .professor-help{color:var(--ui-muted)}
+body .card,body .stat-card,body .professor-form-card,body .professor-list-card,body .structure-item,body .question-group,body .content-card,body .theme-card{background:var(--ui-surface);border:1px solid var(--ui-line);border-radius:var(--ui-radius);padding:24px;margin-bottom:20px;box-shadow:0 3px 12px #172b4d05}
+body .admin-navigation{background:var(--ui-surface);border:1px solid var(--ui-line);border-radius:var(--ui-radius);padding:18px 20px;margin:16px 0 24px;color:var(--ui-ink)}
+body .admin-navigation p,body .nav-links{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:10px 0}
+body .admin-navigation a{display:inline-flex;align-items:center;min-height:40px;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+body .admin-navigation a:hover,body .admin-navigation a[aria-current=page]{background:#eaf0ff;color:#174693}
+body .btn,body button,body input[type=submit]{display:inline-flex;justify-content:center;align-items:center;gap:6px;min-height:42px;padding:9px 16px;border:1px solid transparent;border-radius:8px;background:var(--ui-primary);color:#fff;font:600 .95rem/1.35 system-ui;cursor:pointer;text-decoration:none;box-shadow:none;white-space:normal}
+body .btn:hover,body button:hover{filter:brightness(.93);text-decoration:none;transform:none}
+body .btn-secondary,body button.btn-secondary{background:#edf2f9;color:#263e60;border-color:var(--ui-line)}
+body .btn-danger,body .professor-deactivate-button,body button[value=delete]{background:var(--ui-danger);color:#fff}
+body button:disabled{opacity:.55;cursor:not-allowed}
+body input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=submit]):not([type=button]):not([type=color]),body select,body textarea{box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-height:44px;border:1px solid #9daec3;border-radius:8px;padding:10px 12px;background:#fff;color:var(--ui-ink);font:inherit}
+body input[type=checkbox],body input[type=radio]{width:18px;height:18px;accent-color:var(--ui-primary);vertical-align:middle}
+body textarea{resize:vertical}body label{font-weight:600;display:block;margin:10px 0 6px}body form>button{margin-top:12px}
+body :focus-visible{outline:3px solid #b56a00;outline-offset:3px}
+body .actions,body .button-group{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+body .professor-management-grid>*,body .grid>*,body .form-grid>*,body .stats-grid>*{min-width:0}
+body .alert{padding:14px 18px;border-radius:8px;border:1px solid #b8cbea;background:#edf3ff;color:#1b437b;margin:16px 0}
+body .alert-error,body .alert-danger{background:#fff1f1;color:#8a1b2a;border-color:#e4b1b7}body .alert-success{background:#edf8f1;color:#17643b;border-color:#aed6be}
+body .badge,body .status-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.85rem;font-weight:600;background:#eaf0f8;color:#263e60}
+body table{width:100%;border-collapse:collapse;background:#fff;font-size:.95rem}body th{background:#edf2f8;color:#263e60;font-weight:650;text-align:left}body th,body td{padding:12px 14px;border-bottom:1px solid var(--ui-line);vertical-align:top}body tbody tr:hover{background:#f7f9fc}
+body .ui-table-scroll{max-width:100%;overflow:auto;border:1px solid var(--ui-line);border-radius:10px;margin:16px 0}body .ui-table-scroll table{margin:0}
+body img,body video{max-width:100%;height:auto}body audio{max-width:100%}body main{min-width:0}body .delete-professor-form{border-top:1px solid var(--ui-line);margin:12px 0;padding-top:10px}body .delete-professor-form label{font-size:.85rem;font-weight:400}
+body .skip-link{position:absolute;left:12px;top:-100px;background:#fff;padding:12px;z-index:10000}body .skip-link:focus{top:12px}
+@media(max-width:720px){body .container,body .admin-container,body .page-container{width:calc(100% - 24px);margin:12px auto}body header,body .card,body .professor-form-card,body .professor-list-card,body .structure-item{padding:16px}body .professor-management-grid,body .grid,body .form-grid,body .stats-grid{grid-template-columns:1fr!important}body .admin-navigation{padding:12px}body .admin-navigation a{padding:8px}body th,body td{padding:10px}body .structure-item label{display:block;margin:8px 0}body .actions>.btn{flex:1 1 auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+@media print{body .admin-navigation,body .skip-link,body .delete-professor-form{display:none}body .ui-table-scroll{overflow:visible}body{background:white}}
+
+.password-toggle{margin:.25rem .5rem .75rem 0;padding:.4rem .8rem} @media print{nav,form,.no-print,.btn,.h150-language,.qp-notifications{display:none!important} .container{max-width:none!important;margin:0!important} details{display:block}}
+
+.qp-notifications{margin:.75rem 0 .75rem auto;padding:.75rem;border:1px solid #cbd5e1;border-radius:8px;max-width:30rem;background:#fff}.qp-notifications summary{cursor:pointer;text-align:right}.qp-notifications summary strong{display:inline-block;background:#1d4ed8;color:#fff;padding:.15rem .55rem;border-radius:1rem}.qp-notifications article{border-top:1px solid #e2e8f0;padding:.6rem 0}.qp-notifications[open]{max-height:28rem;overflow:auto}

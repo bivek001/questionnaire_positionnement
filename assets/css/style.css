@@ -1,0 +1,608 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+    margin: 24px 0;
+}
+
+/* =========================================
+   PAGE CONTAINER
+========================================= */
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #111827;
+    font-size: 30px;
+}
+
+h2 {
+    color: #1f2937;
+    margin-top: 30px;
+    margin-bottom: 12px;
+}
+
+h3 {
+    color: #374151;
+}
+
+p {
+    margin-top: 8px;
+}
+
+/* =========================================
+   ADMIN HEADER
+========================================= */
+
+.admin-header {
+    background: #111827;
+    color: #ffffff;
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+}
+
+.admin-header h1,
+.admin-header h2,
+.admin-header h3 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.admin-header h1 {
+    margin-bottom: 5px;
+}
+
+.admin-header p {
+    margin: 0;
+    color: #d1d5db;
+}
+
+.admin-header strong {
+    color: #ffffff;
+}
+
+/* =========================================
+   SHARED ADMIN NAVIGATION
+========================================= */
+
+.admin-navigation {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 18px 0 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-navigation > strong {
+    display: block;
+    color: #111827;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.admin-navigation p {
+    margin: 7px 0;
+    line-height: 2;
+}
+
+.admin-navigation a,
+.admin-navigation strong {
+    white-space: nowrap;
+}
+
+.admin-navigation a {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 6px;
+    color: #2563eb;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.admin-navigation a:hover {
+    background: #eff6ff;
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+.admin-navigation p:first-of-type > strong {
+    display: inline-block;
+    padding: 5px 9px;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #edf0f4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   TABLES
+========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    margin-top: 15px;
+    border: 1px solid #e5e7eb;
+}
+
+th,
+td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+th {
+    background: #f3f4f6;
+    color: #374151;
+    font-weight: 600;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* =========================================
+   FORMS
+========================================= */
+
+form {
+    max-width: 100%;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #374151;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+input[type="url"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: 7px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button,
+.btn {
+    display: inline-block;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+button:hover,
+.btn:hover {
+    background: #1d4ed8;
+    text-decoration: none;
+}
+
+button:active,
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-secondary {
+    background: #6b7280;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+.btn-danger {
+    background: #dc2626;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+.btn-success {
+    background: #16a34a;
+}
+
+.btn-success:hover {
+    background: #15803d;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+.status {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-active,
+.status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-inactive {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #fecaca;
+}
+
+.alert-warning {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fde68a;
+}
+
+/* =========================================
+   TOP NAVIGATION
+========================================= */
+
+.topbar {
+    background: #111827;
+    color: #ffffff;
+    padding: 14px 4%;
+}
+
+.topbar a {
+    color: #ffffff;
+    margin-right: 18px;
+}
+
+.topbar a:hover {
+    color: #bfdbfe;
+}
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin: 20px 0 30px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #edf0f4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #6b7280;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #111827;
+}
+
+/* =========================================
+   ADMIN DASHBOARD SECTIONS
+========================================= */
+
+.dashboard-section {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-section h2,
+.dashboard-section h3 {
+    margin-top: 0;
+}
+
+.dashboard-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================================
+   QUESTIONNAIRE
+========================================= */
+
+.question-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #edf0f4;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.06);
+}
+
+.question-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.choice {
+    display: block;
+    padding: 8px 0;
+    font-weight: normal;
+}
+
+.choice input {
+    margin-right: 8px;
+}
+
+/* =========================================
+   WORKFLOW / BOTTOM NAVIGATION
+========================================= */
+
+.workflow-navigation {
+    margin-top: 30px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.workflow-navigation a {
+    display: inline-block;
+    margin: 4px 12px 4px 0;
+}
+
+/* =========================================
+   DANGER AREA
+========================================= */
+
+.danger-zone {
+    background: #fff7f7;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.danger-zone h2,
+.danger-zone h3 {
+    color: #991b1b;
+    margin-top: 0;
+}
+
+/* =========================================
+   MEDIA
+========================================= */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+audio,
+video {
+    max-width: 100%;
+}
+
+/* =========================================
+   UTILITY
+========================================= */
+
+.text-muted {
+    color: #6b7280;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 850px) {
+
+    .admin-navigation p {
+        line-height: 2.5;
+    }
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+
+    .container {
+        width: 94%;
+        margin-top: 20px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .admin-header {
+        padding: 17px;
+    }
+
+    .admin-navigation {
+        padding: 15px;
+    }
+
+    .admin-navigation p {
+        line-height: 2.7;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    th,
+    td {
+        padding: 9px;
+        font-size: 14px;
+    }
+
+    button,
+    .btn {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 7px;
+    }
+
+    .actions {
+        display: block;
+    }
+
+    .workflow-navigation a {
+        display: block;
+        margin-bottom: 8px;
+    }
+}
