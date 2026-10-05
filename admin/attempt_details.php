@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/../includes/positioning_ux.php';
 require_once __DIR__ . "/../includes/question_support.php";
 require_once __DIR__ . '/../includes/language.php';
 require_once __DIR__ . '/admin_language.php';
@@ -1149,7 +1150,7 @@ $canGeneratePdf =
                         <p class="text-muted"><?= adminH(t('p150i_15776ce1d415')) ?> <?= htmlspecialchars($response['graded_at']) ?></p>
                     <?php endif; ?>
 
-                    <?php qp_review_suggestion($pdo, (int)$response['response_id']); ?>
+                    <?php qp_review_suggestion($pdo, (int)$response['response_id']); ?><div class="pu-review-status"><p><strong><?= qp_h($response['graded_at'] ? pu('Human awarded score','Note attribuée par un correcteur') : pu('Provisional automatic score — human review pending','Note automatique provisoire — correction humaine en attente')) ?>:</strong> <?= qp_h($response['awarded_points']) ?> / <?= qp_h($response['points']) ?></p><p><?= qp_h($response['graded_at'] ? pu('Reviewed','Corrigé') : pu('Pending review','À corriger')) ?></p></div>
                     <form method="POST" class="grading-form"><?php ux_csrf_field(); ?><input type="hidden" name="lang" value="<?= adminH(currentLanguage()) ?>">
 
                         <input type="hidden" name="response_id" value="<?= (int)$response['response_id'] ?>">
@@ -1254,5 +1255,6 @@ $choiceStmt = $pdo->prepare(
         <a class="btn btn-secondary" href="logout.php?lang=<?= adminH(currentLanguage()) ?>"><?= adminH(t('h150_logout')) ?></a>
     </nav>
 </div>
+<div class="container"><?php require_once __DIR__.'/../includes/competency_results.php'; pu_competency_results($pdo, $attempt); ?></div>
 </body>
 </html>

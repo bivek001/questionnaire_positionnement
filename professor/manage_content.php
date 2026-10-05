@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/../includes/positioning_ux.php';
 require_once __DIR__ . "/../includes/safe_rich_content.php";
 require_once __DIR__ . '/professor_language.php';
 require_once __DIR__ . '/expansion_bootstrap.php';
@@ -1452,7 +1453,7 @@ $paragraphs =
                                             </h5>
                                         <?php endif; ?>
                                         <div>
-                                            <?= qp_rich_html($paragraph['content'] ?? '') ?>
+                                            <?= pu_rich($paragraph['content'] ?? '') ?>
                                         </div>
                                         <?php if (
                                             !empty(
@@ -1782,7 +1783,7 @@ $paragraphs =
                                                     class="rich-editor"
                                                     contenteditable="true"
                                                     data-rich-editor
-                                                ><?= qp_rich_html($paragraph['content'] ?? '') ?></div>
+                                                ><?= pu_rich($paragraph['content'] ?? '') ?></div>
                                                 <textarea
                                                     name="paragraph_content"
                                                     data-rich-input

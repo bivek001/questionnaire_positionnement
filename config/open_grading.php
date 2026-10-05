@@ -1,6 +1,5 @@
 <?php
-// No external calls or credentials are enabled by default.
-return [
-    'mode' => 'deterministic',
-    // This corrective package always applies the deterministic quarter-band rule.
-];
+// Initial keyword coverage suggestion; human review / override is authoritative.
+// New suggestions: 0 / 25 / 50 / 75 / 100%; 100% requires every configured group.
+// Existing suggestion snapshots and human awarded points are never rewritten.
+return ['mode' => 'deterministic'];

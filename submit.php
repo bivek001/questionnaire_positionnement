@@ -822,6 +822,7 @@ try {
 
     $pdo->prepare("UPDATE attempts SET corrected_at=CURRENT_TIMESTAMP WHERE id=? AND completed_at IS NOT NULL AND corrected_at IS NULL AND NOT EXISTS (SELECT 1 FROM responses r JOIN questions q ON q.id=r.question_id WHERE r.attempt_id=attempts.id AND q.question_type='open' AND r.graded_at IS NULL)")->execute([$attemptId]);
     $pdo->commit();
+        unset($_SESSION['positioning_drafts'][(int)$traineeId . ':' . $questionnaireMode . ':' . ($questionnaireMode === 'assigned' ? (int)$assignmentId : (int)$themeId)]);
 
 
     header(

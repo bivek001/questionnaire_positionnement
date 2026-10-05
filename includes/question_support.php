@@ -68,10 +68,10 @@ function qp_suggest(array $context, array $config): array {
         $matched = [];
         foreach ($groups as $i => $alternatives) {
             foreach ($alternatives as $term) {
-                if (str_contains(' ' . $answer . ' ', ' ' . $term . ' ')) { $matched[] = $i + 1; break; }
+                if (strpos(' ' . $answer . ' ', ' ' . $term . ' ') !== false) { $matched[] = $i + 1; break; }
             }
         }
-        return ['points' => round($max * (count($matched) === 0 ? 0 : ceil(4 * count($matched) / count($groups)) / 4), 2), 'method' => 'criteria_bands_v2', 'matched' => $matched, 'total' => count($groups)];
+        return ['points' => round($max * (count($matched) === 0 ? 0 : (count($matched) === count($groups) ? 1 : (count($matched) / count($groups) <= .25 ? .25 : (count($matched) / count($groups) <= .5 ? .5 : .75)))), 2), 'method' => 'criteria_bands_v3', 'matched' => $matched, 'total' => count($groups)];
     }
     $reference = qp_normalize_answer($context['model_answer']);
     if ($reference !== '' && $answer === $reference) return ['points' => round($max, 2), 'method' => 'reference_exact_v1'];
@@ -116,12 +116,14 @@ function qp_review_suggestion(PDO $pdo, int $responseId): void {
     $context = $details['context'];
     $s = $details['suggestion'];
     echo '<p>' . qp_h(t('qp_suggestion_notice')) . '</p>';
+    echo '<p>' . qp_h(currentLanguage()==='fr' ? 'Nouvelles suggestions — barème initial : 0 %, 25 %, 50 %, 75 % ou 100 % des points. 0 critère : 0 % ; couverture ≤ 25 % : 25 % ; ≤ 50 % : 50 % ; couverture partielle > 50 % : 75 % ; tous les critères : 100 % ; la correction humaine reste la référence.' : 'New suggestions — initial tiers: 0%, 25%, 50%, 75% or 100% of full points. No criteria: 0%; coverage ≤ 25%: 25%; ≤ 50%: 50%; incomplete coverage > 50%: 75%; all criteria: 100%; human review remains authoritative.') . '</p>';
+    if (($s['method'] ?? '') === 'criteria_bands_v2') echo '<p>' . qp_h(currentLanguage()==='fr' ? 'Suggestion historique : l’ancien barème arrondissait la couverture au quart supérieur. Cette suggestion est conservée ; votre correction humaine reste prioritaire.' : 'Historical suggestion: the previous rule rounded coverage up to the next quarter. This snapshot is retained; your human correction remains authoritative.') . '</p>';
     if ($row['suggested_points'] !== null) echo '<p><strong>' . qp_h($row['suggested_points']) . ' / ' . qp_h($context['max_points']) . '</strong></p>';
     else echo '<p>' . qp_h(t('qp_no_suggestion')) . '</p>';
-    $method = ['criteria_bands_v2' => 'qp_keyword_method', 'reference_exact_v1' => 'qp_exact_method', 'provider' => 'qp_provider_method'][$s['method']] ?? 'qp_manual_method';
+    $method = ['criteria_bands_v3' => 'qp_keyword_method', 'criteria_bands_v2' => 'qp_keyword_method', 'reference_exact_v1' => 'qp_exact_method', 'provider' => 'qp_provider_method'][$s['method']] ?? 'qp_manual_method';
     echo '<p>' . qp_h(t($method)) . '</p>';
     if (isset($s['total']) && $s['total'] > 0) echo '<p>' . qp_h(t('qp_coverage')) . ': ' . count($s['matched']) . ' / ' . (int)$s['total'] . '</p>';
-    if (($s['method'] ?? '') === 'criteria_bands_v2') {
+    if (in_array(($s['method'] ?? ''), ['criteria_bands_v2','criteria_bands_v3'], true)) {
         echo '<ul>';
         foreach (preg_split('/\R/u', $context['keywords'] ?? '') ?: [] as $line) {
             if (trim($line) === '') continue;

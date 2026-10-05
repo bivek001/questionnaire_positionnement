@@ -2,8 +2,8 @@
 require_once __DIR__.'/safe_rich_content.php';
 function pkg_recipient(): array {
     $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
-    if (str_contains($script, '/admin/') && !empty($_SESSION['admin_id'])) return ['admin', 0];
-    if (str_contains($script, '/professor/') && !empty($_SESSION['professor_id'])) return ['professor', (int)$_SESSION['professor_id']];
+    if (strpos($script, '/admin/') !== false && !empty($_SESSION['admin_id'])) return ['admin', 0];
+    if (strpos($script, '/professor/') !== false && !empty($_SESSION['professor_id'])) return ['professor', (int)$_SESSION['professor_id']];
     if (!empty($_SESSION['trainee_id'])) return ['trainee', (int)$_SESSION['trainee_id']];
     return ['', 0];
 }

@@ -12,7 +12,7 @@ function qp_rich_html(string $html): string {
     for ($i = 0; $i < 4; $i++) {
         if (preg_match('~<(pre|code)\b~i', $html)) break;
         $visible = trim(strip_tags($html));
-        if (!preg_match('~^&(?:amp;)*lt;(p|div|span|font|h[1-6]|ul|ol|blockquote|strong|b|em|i)\b~i', $visible) ||
+        if (!preg_match('~^&(?:amp;)*lt;(p|div|span|font|h[1-6]|ul|ol|blockquote|strong|b|em|i|table|thead|tbody|tr|td|th)\b~i', $visible) ||
             !preg_match('~&(?:amp;)*lt;/[a-z][^;]*&(?:amp;)*gt;~i', $visible)) break;
         $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
@@ -24,7 +24,7 @@ function qp_rich_html(string $html): string {
         $dom->loadHTML('<?xml encoding="UTF-8"><html><body>' . $html . '</body></html>', LIBXML_NONET);
         $body = $dom->getElementsByTagName('body')->item(0);
         if (!$body) return '';
-        $allowed = ['p','br','strong','b','em','i','u','s','h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','span','div','a','pre','code','table','thead','tbody','tr','th','td','hr','sub','sup'];
+        $allowed = ['p','br','strong','b','em','i','u','s','h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','span','div','a','pre','code','table','thead','tbody','tr','th','td','hr','sub','sup','img'];
         $drop = ['script','style','iframe','object','embed','svg','math','template','form','input','button','textarea','select','link','meta','base'];
         $render = function (DOMNode $node) use (&$render, $allowed, $drop, $plain): string {
             if ($node instanceof DOMText) return $plain ? nl2br(qp_h($node->nodeValue)) : qp_h($node->nodeValue);
@@ -45,6 +45,18 @@ function qp_rich_html(string $html): string {
                 if (!preg_match('/[\x00-\x20\x7f]/', $href) && preg_match('~^(https?://|mailto:|#)~i', $href)) {
                     $attributes .= ' href="' . qp_h($href) . '" rel="noopener noreferrer"';
                 }
+            }
+            if ($tag === 'img') {
+                $src = trim($node->getAttribute('src'));
+                if (!qp_safe_media_path($src)) return '';
+                return '<img src="' . qp_h($src) . '" alt="' . qp_h($node->getAttribute('alt')) . '" loading="lazy">';
+            }
+            if (in_array($tag, ['td','th'], true)) {
+                foreach (['colspan','rowspan'] as $attribute) {
+                    $v=$node->getAttribute($attribute);
+                    if (ctype_digit($v) && (int)$v > 0 && (int)$v <= 30) $attributes .= ' '.$attribute.'="'.(int)$v.'"';
+                }
+                if ($tag==='th' && in_array($node->getAttribute('scope'), ['row','col','rowgroup','colgroup'], true)) $attributes .= ' scope="'.qp_h($node->getAttribute('scope')).'"';
             }
             $safe = [];
             foreach (explode(';', $styles) as $declaration) {
@@ -75,4 +87,10 @@ function qp_rich_html(string $html): string {
         libxml_clear_errors();
         libxml_use_internal_errors($previous);
     }
+}
+
+function qp_safe_media_path($path): bool {
+ if (!is_string($path) || preg_match('/[\x00-\x20\x7f]/', $path) || strpos($path, '..') !== false) return false;
+ return preg_match('~^uploads/[a-zA-Z0-9_./-]+$~D', $path) === 1 ||
+  (strpos($path, 'https://') === 0 && filter_var($path, FILTER_VALIDATE_URL) !== false);
 }

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/../includes/positioning_ux.php';
 require_once __DIR__ . "/../includes/course_access.php";
 require_once __DIR__ . "/../includes/question_support.php";
 require_once __DIR__ . '/professor_language.php';
@@ -207,7 +208,8 @@ if (!$attempt) {
 
     </div>
 
-    </body>
+    <div class="container"><?php require_once __DIR__.'/../includes/competency_results.php'; pu_competency_results($pdo, $attempt, $professorId); ?></div>
+</body>
     </html>
 
     <?php
@@ -1525,7 +1527,7 @@ $passationLabel =
                         <?php endif; ?>
 
 
-                        <?php qp_review_suggestion($pdo, (int)$response['response_id']); ?>
+                        <?php qp_review_suggestion($pdo, (int)$response['response_id']); ?><div class="pu-review-status"><p><strong><?= qp_h($response['graded_at'] ? pu('Human awarded score','Note attribuée par un correcteur') : pu('Provisional automatic score — human review pending','Note automatique provisoire — correction humaine en attente')) ?>:</strong> <?= qp_h($response['awarded_points']) ?> / <?= qp_h($response['points']) ?></p><p><?= qp_h($response['graded_at'] ? pu('Reviewed','Corrigé') : pu('Pending review','À corriger')) ?></p></div>
                     <form
                             method="POST"
                             class="grading-form"
@@ -1772,5 +1774,6 @@ $passationLabel =
 
 </div>
 
+<div class="container"><?php require_once __DIR__.'/../includes/competency_results.php'; pu_competency_results($pdo, $attempt, $professorId); ?></div>
 </body>
 </html>

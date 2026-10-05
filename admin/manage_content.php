@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/../includes/positioning_ux.php';
 require_once __DIR__ . "/../includes/safe_rich_content.php";
 require_once __DIR__ . '/../includes/language.php';
 require_once __DIR__ . '/admin_language.php';
@@ -1975,7 +1976,7 @@ $paragraphs =
 
                                         <div>
 
-                                            <?= qp_rich_html($paragraph['content'] ?? '') ?>
+                                            <?= pu_rich($paragraph['content'] ?? '') ?>
 
                                         </div>
 
@@ -2396,7 +2397,7 @@ $paragraphs =
                                                     class="rich-editor"
                                                     contenteditable="true"
                                                     data-rich-editor
-                                                ><?= qp_rich_html($paragraph['content'] ?? '') ?></div>
+                                                ><?= pu_rich($paragraph['content'] ?? '') ?></div>
 
 
                                                 <textarea

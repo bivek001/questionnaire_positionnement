@@ -36,3 +36,52 @@ body .skip-link{position:absolute;left:12px;top:-100px;background:#fff;padding:1
 .password-toggle{margin:.25rem .5rem .75rem 0;padding:.4rem .8rem} @media print{nav,form,.no-print,.btn,.h150-language,.qp-notifications{display:none!important} .container{max-width:none!important;margin:0!important} details{display:block}}
 
 .qp-notifications{margin:.75rem 0 .75rem auto;padding:.75rem;border:1px solid #cbd5e1;border-radius:8px;max-width:30rem;background:#fff}.qp-notifications summary{cursor:pointer;text-align:right}.qp-notifications summary strong{display:inline-block;background:#1d4ed8;color:#fff;padding:.15rem .55rem;border-radius:1rem}.qp-notifications article{border-top:1px solid #e2e8f0;padding:.6rem 0}.qp-notifications[open]{max-height:28rem;overflow:auto}
+
+/* Positioning workflow: shared by all roles. */
+body .pu-test-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:24px}body .pu-progress{background:white;border:1px solid var(--ui-line);padding:18px;margin:20px 0;border-radius:12px}body progress{width:100%;height:16px;accent-color:var(--ui-primary)}body .pu-test-navigation{align-self:start;position:sticky;top:12px;max-height:85vh;overflow:auto}body .pu-test-navigation ol{padding:0;list-style:none}body .pu-test-navigation li{margin:6px 0}body .pu-test-navigation button{width:100%;text-align:left;justify-content:start;font-size:.85rem}body .pu-test-navigation button[aria-current]{border:2px solid var(--ui-primary)}body .pu-test-navigation button[data-answered=true]::before{content:'✓';color:#17643b}body .pu-question-page[hidden],body [hidden]{display:none!important}body .pu-question-page{max-width:850px}body .pu-choice{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--ui-line);border-radius:8px;cursor:pointer;font-weight:400}body .pu-choice:has(input:checked){background:#edf3ff;border-color:var(--ui-primary)}body .pu-choice input{flex-shrink:0;margin-top:4px}body .pu-page-controls{justify-content:space-between;margin:24px 0}body .pu-rich{line-height:1.75;overflow-wrap:anywhere}body .pu-rich img{max-width:100%;height:auto}body .pu-media{margin:18px 0}body .pu-media figcaption{font-size:.85rem;color:var(--ui-muted)}body .pu-tree{padding-left:20px;border-left:2px solid var(--ui-line);margin:16px 0}body .pu-tree details{margin:12px 0}body .pu-tree summary{cursor:pointer;padding:10px;font-weight:600}body .pu-author-actions{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}body .pu-source-guide{border-left:4px solid var(--ui-primary);padding:16px;background:#edf3ff}body .qp-notifications{position:relative;margin-left:auto}body .qp-notifications summary::before{content:'🔔 ';font-size:1.2rem}body .pu-question-page .question-block{padding:24px;background:#fff;border:1px solid var(--ui-line);border-radius:12px}body .pu-competency{margin:16px 0}body .pu-review-status{border:1px solid var(--ui-line);padding:16px;margin:16px 0;border-radius:8px}body .pu-source-guide a{display:inline-block;padding:6px}
+@media(max-width:850px){body .pu-test-layout{grid-template-columns:1fr}body .pu-test-navigation{position:static;max-height:none}body #pu-question-nav{display:none}body .pu-tree{padding-left:10px}}
+@media print{body .pu-test-navigation,body .pu-progress,body .pu-page-controls{display:none!important}}
+
+/* Trainee reading layout */
+
+        body.trainee-course { margin:0; background:#f3f7f8; color:#20343e; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.65; }
+        .trainee-course *, .trainee-course *::before, .trainee-course *::after { box-sizing:border-box; }
+        .trainee-course .container { width:calc(100% - 2rem); max-width:960px; margin:0 auto; padding:2rem 0; background:transparent; border:0; box-shadow:none; }
+        .trainee-course h1, .trainee-course h2, .trainee-course h3, .trainee-course h4 { color:#173b45; line-height:1.3; overflow-wrap:anywhere; }
+        .trainee-course h1 { font-size:clamp(1.8rem,4vw,2.7rem); margin:.4rem 0 1rem; }
+        .trainee-course h2 { font-size:1.6rem; }
+        .trainee-course h3 { font-size:1.3rem; }
+        .trainee-course h4 { font-size:1.15rem; }
+        .trainee-course p { margin:0 0 1rem; }
+        .trainee-course a { color:#09665f; text-underline-offset:.2em; }
+        .trainee-course :is(a,button,input,textarea):focus-visible { outline:3px solid #9b4c00; outline-offset:4px; }
+        .trainee-course .questionnaire-header, .trainee-course .question-block, .trainee-course .submit-area { padding:clamp(1.25rem,3vw,2rem); margin:1.5rem 0; background:#fff; border:1px solid #d8e4e7; border-radius:18px; box-shadow:0 6px 22px rgba(23,59,69,.04); }
+        .trainee-course .questionnaire-header { text-align:left; border-top:5px solid #09665f; }
+        .trainee-course .eyebrow, .trainee-course :is(.questionnaire-chapter,.questionnaire-lesson,.questionnaire-topic) > p { color:#09665f; font-size:.8rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 .35rem; }
+        .trainee-course .mode-badge, .trainee-course .points-badge { display:table; max-width:100%; padding:.35rem .8rem; border-radius:999px; background:#e5f3ef; color:#14584f; font-size:.9rem; overflow-wrap:anywhere; }
+        .trainee-course .questionnaire-header > p:last-child { margin:1.25rem 0 0; padding-top:1rem; border-top:1px solid #d8e4e7; color:#536772; }
+        .trainee-course .questionnaire-chapter { margin:2.5rem 0 1.5rem; padding:1.3rem 1.5rem; background:#e5f3ef; border-left:5px solid #09665f; border-radius:0 14px 14px 0; }
+        .trainee-course .questionnaire-lesson { margin:2rem 0 1rem; padding-left:1rem; border-left:3px solid #70a69c; }
+        .trainee-course .questionnaire-topic { margin:1.5rem 0 1rem; padding-left:1rem; border-left:3px solid #c0d8d2; }
+        .trainee-course :is(.questionnaire-chapter,.questionnaire-lesson,.questionnaire-topic) :is(h2,h3,h4) { margin:0; }
+        .trainee-course .questionnaire-paragraph { margin:1rem 0 1.5rem; padding:1.25rem; background:#edf2f4; border:1px solid #d8e4e7; border-radius:12px; overflow-wrap:anywhere; }
+        .trainee-course .questionnaire-paragraph h4 { margin:.4rem 0 1rem; }
+        .trainee-course .question-block { min-width:0; overflow-wrap:anywhere; }
+        .trainee-course .question-block h3 { margin:0 0 1rem; color:#09665f; }
+        .trainee-course .question-media { margin:1.5rem 0; }
+        .trainee-course .question-media :is(img,audio,video) { display:block; width:100%; max-width:700px; border-radius:10px; }
+        .trainee-course .question-media :is(img,video) { height:auto; }
+        .trainee-course .question-block label:has(input) { display:flex; align-items:flex-start; gap:.8rem; width:100%; min-height:48px; padding:1rem; background:#f8fafb; border:1px solid #ccdce0; border-radius:10px; cursor:pointer; }
+        .trainee-course .question-block label:has(input):hover { border-color:#09665f; background:#eff7f4; }
+        .trainee-course .question-block label:has(input:checked) { border-color:#09665f; background:#e5f3ef; }
+        .trainee-course .question-block label:has(input:focus-visible) { outline:3px solid #9b4c00; outline-offset:3px; }
+        .trainee-course input:is([type=radio],[type=checkbox]) { flex:0 0 auto; width:1.2rem; height:1.2rem; margin:.2rem 0 0; accent-color:#09665f; }
+        .trainee-course textarea { display:block; width:100%; max-width:48rem; min-height:160px; padding:1rem; border:1px solid #a9bfc5; border-radius:10px; resize:vertical; font:inherit; color:inherit; background:#fff; }
+        .trainee-course .submit-area { border-top:4px solid #09665f; }
+        .trainee-course .submit-area h2 { margin:0 0 .5rem; }
+        .trainee-course .submit-area button { width:auto; min-height:48px; padding:.85rem 1.5rem; border:1px solid #09665f; border-radius:10px; background:#09665f; color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+        .trainee-course .submit-area button:hover { background:#074f49; }
+        .trainee-course .container > hr, .trainee-course form > hr { display:none; }
+        @media (max-width:600px) { .trainee-course .container { width:calc(100% - 1rem); padding:1rem 0; } .trainee-course .submit-area button { width:100%; } }
+    
+body .trainee-course .container{max-width:1180px}body .trainee-course header.course-header{padding:20px}body .trainee-course header.course-header p{margin:8px 0}body .trainee-course header.course-header h1{margin:8px 0 12px}body .trainee-course .question-block textarea{min-height:150px}body .trainee-course .submit-area{margin-top:24px;padding:20px}body .trainee-course .pu-question-page h2{font-size:1.25rem}body .trainee-course .pu-progress{scroll-margin-top:12px}
