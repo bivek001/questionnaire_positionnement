@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__."/word_answer_controls.php";
 require_once __DIR__.'/safe_rich_content.php';
 function pu($en, $fr) { return currentLanguage() === 'fr' ? $fr : $en; }
 function pu_source() { static $source; if ($source === null) $source = require __DIR__.'/positioning_source.php'; return $source; }
