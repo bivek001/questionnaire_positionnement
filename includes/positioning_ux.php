@@ -4,7 +4,7 @@ require_once __DIR__.'/safe_rich_content.php';
 function pu($en, $fr) { return currentLanguage() === 'fr' ? $fr : $en; }
 function pu_source() { static $source; if ($source === null) $source = require __DIR__.'/positioning_source.php'; return $source; }
 function pu_metadata(PDO $pdo, $theme) {
- try { $s=$pdo->prepare('SELECT m.* FROM positioning_question_metadata m JOIN questions q ON q.id=m.question_id WHERE q.theme_id=?'); $s->execute([$theme]); $result=[]; foreach($s->fetchAll(PDO::FETCH_ASSOC) as $row) {
+ try { $s=$pdo->prepare('SELECT m.question_id,m.competency_code,m.domain_number,m.diagnostic FROM positioning_question_metadata m JOIN questions q ON q.id=m.question_id WHERE q.theme_id=?'); $s->execute([$theme]); $result=[]; foreach($s->fetchAll(PDO::FETCH_ASSOC) as $row) {
   $id=$row['question_id']; if(!isset($result[$id])) { $result[$id]=$row; $result[$id]['codes']=[]; }
   $result[$id]['codes'][]=$row['competency_code'];
  } foreach($result as &$row) $row['competency_code']=implode(', ', $row['codes']); unset($row); return $result; }
@@ -16,7 +16,7 @@ function pu_media($type, $path, $title) {
  if (!qp_safe_media_path($path)) return;
  $rolePage=preg_match('~/(admin|professor)/~', $_SERVER['SCRIPT_NAME'] ?? '')===1;
  $url=qp_h(($rolePage && strpos($path,'uploads/')===0?'../':'').$path);
- if ($type==='image') echo '<figure class="pu-media"><a href="'.$url.'" target="_blank" rel="noopener"><img src="'.$url.'" alt="'.qp_h($title).'" loading="lazy"></a><figcaption>'.qp_h(pu('Open image at full size','Ouvrir l’image en taille réelle')).'</figcaption></figure>';
+ if ($type==='image') echo '<figure class="pu-media"><a href="'.$url.'" target="_blank" rel="noopener"><img src="'.$url.'" alt="'.qp_h($title).'" loading="lazy"></a><figcaption>'.qp_h(t('qpx_full_image')).'</figcaption></figure>';
  elseif (in_array($type,['audio','video'],true)) echo '<'.$type.' controls preload="metadata" src="'.$url.'"></'.$type.'>';
 }
 function pu_draft_key($trainee,$mode,$assignment,$theme) { return $trainee.':'.$mode.':'.($mode==='assigned'?$assignment:$theme); }

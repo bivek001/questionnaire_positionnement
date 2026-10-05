@@ -44,6 +44,8 @@ if (!$page) {
     http_response_code(404);
     die(t('h150_introduction_page_not_found'));
 }
+require_once __DIR__.'/includes/trainee_course_overview.php';
+$overview=traineeImportedIntroduction($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars(htmlLanguage(), ENT_QUOTES, 'UTF-8') ?>">
@@ -252,7 +254,8 @@ if (!$page) {
     <main>
         <section class="card" aria-labelledby="introduction-title">
             <h2 id="introduction-title"><?= htmlspecialchars($page['title']) ?></h2>
-            <div class="introduction-content"><?= nl2br(htmlspecialchars($page['content'])) ?></div>
+            <?php if(!$overview || trim($page['content'])!=="Welcome to the positioning questionnaire. Please read this introduction carefully before starting your questionnaires."): ?><div class="introduction-content"><?= nl2br(htmlspecialchars($page['content'])) ?></div><?php endif; ?>
+            <?php if($overview): ?><article class="trainee-overview"><h3><?= qp_h($overview['name']) ?></h3><div class="introduction-content"><?= nl2br(qp_h($overview['content'])) ?></div></article><?php endif; ?>
 
             <?php if (!empty($page['updated_at'])): ?>
                 <p class="text-muted introduction-updated">

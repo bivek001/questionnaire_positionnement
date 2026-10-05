@@ -89,3 +89,21 @@ body .trainee-course .container{max-width:1180px}body .trainee-course header.cou
 .pu-word-fields fieldset{border:1px solid #d5dde7;border-radius:8px;padding:1rem;margin:1rem 0}.pu-word-fields legend{font-weight:600;padding:0 .3rem;max-width:100%;overflow-wrap:anywhere}.pu-word-fields textarea{width:100%;box-sizing:border-box}.pu-word-fields input:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
 
 .pu-staff-correction{margin-top:1rem;border-top:1px solid #d5dde7;padding-top:.75rem}.pu-correct-answer{color:#166534;font-weight:600;white-space:normal}
+
+/* Trainee questionnaire: domain, source, then answer. */
+body.trainee-course .container{max-width:1180px}
+body .pu-competency{padding:24px;background:#e8f1f4;border-left:5px solid #176b80;border-radius:12px}
+body .pu-competency h2{margin:8px 0;font-size:1.6rem}
+body .pu-question-page .questionnaire-paragraph{background:#f2f6fc;border:1px solid #cad8e7;border-left:4px solid #6684ac;border-radius:10px;padding:22px;margin:20px 0;line-height:1.7}
+body .pu-word-fields fieldset{border:0;border-top:1px solid #d7e1e8;padding:22px 0;margin:12px 0;min-width:0}
+body .pu-word-fields legend{font-weight:650;line-height:1.6;max-width:100%;padding:8px 0}
+body .pu-subquestion-number{color:#176b80;margin-right:6px}
+body .pu-question-page textarea{box-sizing:border-box;width:100%;min-height:140px;line-height:1.6;padding:14px;resize:vertical}
+body .pu-answer-state{display:inline-block;margin-left:12px;font-size:.85rem;color:#516271}
+body .pu-page-controls{position:sticky;bottom:0;background:#fff;padding:16px;border:1px solid #d7e1e8;border-radius:12px;z-index:2}
+body .pu-confirmation{border:2px solid #176b80;background:#fff;padding:24px;border-radius:12px;margin:20px 0}
+body .pu-question-page,body .pu-test-layout>div{min-width:0;overflow-wrap:anywhere}
+@media(max-width:600px){body .pu-competency,body .pu-question-page .question-block,body .pu-question-page .questionnaire-paragraph{padding:16px}body .pu-page-controls{gap:8px;flex-wrap:wrap}body .pu-page-controls button{flex:1}body .pu-page-controls span{width:100%;text-align:center;order:3}body .pu-confirmation .actions{flex-direction:column}body .pu-rich{overflow-x:auto}}
+
+/* Compact trainee navigation: dropdown above the current question. */
+body .pu-test-layout{grid-template-columns:minmax(0,1fr)}body .pu-test-navigation{position:static;max-height:none;overflow:visible}body #pu-jump{width:100%;max-width:100%}body .trainee-overview{margin:20px 0;line-height:1.75}body .trainee-overview li{margin:8px 0}body .course-lesson{scroll-margin-top:20px}

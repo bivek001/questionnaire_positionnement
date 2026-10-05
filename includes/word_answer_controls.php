@@ -5,16 +5,16 @@ function pu_word_fields(PDO $pdo, $questionId) {
  catch(PDOException $e) {if(($e->errorInfo[1] ?? null)!==1146)throw $e;return [];}
 }
 function pu_type_label($type){return ['open'=>pu('Open answer','Réponse ouverte'),'single_choice'=>pu('Single choice','Choix unique'),'multiple_choice'=>pu('Multiple choices','Choix multiples')][$type] ?? $type;}
-function pu_word_controls($id,array $fields,$saved) {
+function pu_word_controls($id,array $fields,$saved,$traineeView=false) {
  echo '<div class="pu-word-fields" data-answer-target="answer_'.(int)$id.'">';
- foreach($fields as $f) {
+ foreach($fields as $n=>$f) {
   $fid='word_'.(int)$id.'_'.preg_replace('/[^a-z0-9]/i','',$f['id']);
-  echo '<fieldset data-field-id="'.qp_h($f['id']).'"><legend>'.qp_h($f['label']).'</legend><p class="badge">'.qp_h(pu_type_label($f['type'])).'</p>';
+  echo '<fieldset data-field-id="'.qp_h($f['id']).'" data-field-label="'.qp_h($f['label']).'"><legend>'.($traineeView?'<span class="pu-subquestion-number">'.($n+1).'.</span> ':'').qp_h($f['label']).'</legend>'.($traineeView?'':'<p class="badge">'.qp_h(pu_type_label($f['type'])).'</p>');
   if($f['type']==='open') echo '<label class="sr-only" for="'.$fid.'">'.qp_h($f['label']).'</label><textarea id="'.$fid.'" rows="4"></textarea>';
   else foreach($f['choices'] as $n=>$choice) echo '<label class="pu-choice"><input type="'.($f['type']==='single_choice'?'radio':'checkbox').'" name="'.$fid.'" value="'.qp_h($choice).'"> <span>'.qp_h($choice).'</span></label>';
   echo '</fieldset>';
  }
- echo '</div><label for="answer_'.(int)$id.'">'.qp_h(pu('Your answers','Vos réponses')).'</label><textarea class="pu-word-fallback" id="answer_'.(int)$id.'" name="answers['.(int)$id.']" rows="6">'.qp_h(is_string($saved)?$saved:'').'</textarea>';
+ echo '</div><label for="answer_'.(int)$id.'">'.qp_h($traineeView?t('qpx_answers'):pu('Your answers','Vos réponses')).'</label><textarea class="pu-word-fallback" id="answer_'.(int)$id.'" name="answers['.(int)$id.']" rows="6">'.qp_h(is_string($saved)?$saved:'').'</textarea>';
 }
 
 // Staff caller must already have authorized the question through course/chapter scope.

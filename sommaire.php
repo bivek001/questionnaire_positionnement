@@ -44,6 +44,8 @@ if (!$page) {
     http_response_code(404);
     die(t('h150_sommaire_page_not_found'));
 }
+require_once __DIR__.'/includes/trainee_course_overview.php';
+$overview=traineeOverview($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars(htmlLanguage(), ENT_QUOTES, 'UTF-8') ?>">
@@ -252,7 +254,8 @@ if (!$page) {
     <main>
         <section class="card" aria-labelledby="sommaire-title">
             <h2 id="sommaire-title"><?= htmlspecialchars($page['title']) ?></h2>
-            <div class="sommaire-content"><?= nl2br(htmlspecialchars($page['content'])) ?></div>
+            <?php if(!$overview || trim($page['content'])!=="Welcome to the questionnaire summary page. The trainer can edit this content from the administration area."): ?><div class="sommaire-content"><?= nl2br(htmlspecialchars($page['content'])) ?></div><?php endif; ?>
+            <?php foreach($overview as $course): ?><article class="trainee-overview"><h3><?= qp_h($course['name']) ?></h3><?php foreach($course['chapters'] as $chapter): ?><h4><?= qp_h($chapter['title']) ?></h4><ul><?php foreach($chapter['lessons'] as $lesson): ?><li><a href="course_content.php#lesson_<?= (int)$lesson['id'] ?>"><?= qp_h($lesson['title']) ?></a></li><?php endforeach; ?></ul><?php endforeach; ?></article><?php endforeach; ?>
 
             <?php if (!empty($page['updated_at'])): ?>
                 <p class="text-muted sommaire-updated">

@@ -242,7 +242,6 @@ $stmt = $pdo->prepare(
         q.media_type,
         q.media_path,
         q.question_type,
-        q.points,
         q.display_order,
 
         c.title AS chapter_title,
@@ -447,21 +446,7 @@ header('Cache-Control: no-store');
     </h1>
 
 
-    <?php if (
-        !empty($themeDescription)
-    ): ?>
 
-        <p>
-
-            <?= nl2br(
-                htmlspecialchars(
-                    $themeDescription
-                )
-            ) ?>
-
-        </p>
-
-    <?php endif; ?>
 
 
     <p class="mode-badge">
@@ -550,7 +535,7 @@ header('Cache-Control: no-store');
 
 
     <p>
-        <?= htmlspecialchars(t('h150_please_read_the_learning_content_carefully_and_answer_all_questions_before_submitting_your_questionnaire'), ENT_QUOTES, 'UTF-8') ?>
+        <?= htmlspecialchars(t('qpx_instructions'), ENT_QUOTES, 'UTF-8') ?>
     </p>
 
 
@@ -625,33 +610,44 @@ header('Cache-Control: no-store');
     <?php endif; ?>
 
 
-<section class="pu-progress" aria-label="<?= qp_h(pu('Questionnaire progress','Progression du questionnaire')) ?>">
- <p id="pu-progress-text" aria-live="polite"></p><progress id="pu-progress" value="0" max="<?= count($questions) ?>"></progress>
- <div class="actions"><button type="submit" name="pu_save" value="1" formaction="<?= qp_h('questionnaire.php?'.http_build_query($questionnaireMode==='assigned'?['assignment_id'=>$assignmentId,'lang'=>currentLanguage()]:['theme_id'=>$themeId,'lang'=>currentLanguage()])) ?>" formnovalidate><?= qp_h(pu('Save and continue later','Enregistrer et reprendre plus tard')) ?></button><span><?= qp_h(pu('Saved for this signed-in session.','Enregistré pour cette session connectée.')) ?></span></div>
- <?php if(isset($_GET['saved'])): ?><p role="status"><?= qp_h(pu('Answers saved. You can continue.','Réponses enregistrées. Vous pouvez continuer.')) ?></p><?php endif; ?>
+<input type="hidden" name="pu_page" id="pu-page" value="<?= $currentPage ?>">
+<button hidden id="pu-save-navigation" type="submit" name="pu_save" value="1" formnovalidate formaction="<?= qp_h($draftUrl) ?>"></button>
+<section class="pu-progress" aria-label="<?= qp_h(t('qpx_competency')) ?>">
+ <p id="pu-progress-text" aria-live="polite"></p><progress id="pu-progress" value="<?= $answeredCount ?>" max="<?= count($questions) ?>"></progress>
+ <div class="actions"><button type="submit" name="pu_save" value="1" formaction="<?= qp_h($draftUrl) ?>" formnovalidate><?= qp_h(t('qpx_save')) ?></button><span><?= qp_h(t('qpx_session')) ?></span></div>
+ <?php if(isset($_GET['saved'])): ?><p role="status"><?= qp_h(t('qpx_saved')) ?></p><?php endif; ?>
 </section>
-<div class="pu-test-layout"><aside class="pu-test-navigation"><label for="pu-jump"><?= qp_h(pu('Navigate competencies / questions','Naviguer entre compétences / questions')) ?></label><select id="pu-jump"></select><ol id="pu-question-nav"></ol></aside><div>
+<div class="pu-test-layout"><aside class="pu-test-navigation"><button id="pu-navigation-toggle" type="button" aria-expanded="false" aria-controls="pu-jump" hidden><?= qp_h(t('qpx_navigate')) ?> ▾</button><label class="sr-only" for="pu-jump"><?= qp_h(t('qpx_navigate')) ?></label><select id="pu-jump"></select></aside><div>
 <?php foreach($questions as $i=>$question):
  $id=(int)$question['id']; $m=$metadata[$id] ?? null; $values=$draft['answers'][$id] ?? ''; $choiceValues=is_array($values)?$values:[$values];
- $title=$m ? ($i+1).' · '.$m['competency_code'].' · '.pu_source()['domains'][(string)$m['domain_number']]['title'] : ($question['topic_title'] ?: $question['chapter_title'] ?: pu('Question','Question')).' · '.($i+1);
+ $domain=$question['lesson_title'] ?: ($question['chapter_title'] ?: $themeName);
+ $competencyKey=$question['lesson_id'] ? 'lesson:'.$question['lesson_id'] : 'chapter:'.($question['chapter_id'] ?? 0);
+ $codes=$m['competency_code'] ?? '';
+ $title=$domain.' · '.($codes ? $codes.' · ' : '').($i+1);
 ?>
-<section class="pu-question-page" data-title="<?= qp_h($title) ?>" data-question-id="<?= $id ?>" role="group" aria-labelledby="question_<?= $id ?>">
- <div class="pu-competency"><p><?= qp_h($themeName) ?></p>
- <?php if($m): ?><p class="badge"><?= qp_h($m['diagnostic']==='professional'?'Diagnostic des compétences professionnelles':'Diagnostic des compétences transversales') ?></p><h2><?= qp_h($title) ?></h2><?php endif; ?>
- <p><?= qp_h(implode(' › ',array_filter([$question['chapter_title'],$question['lesson_title'],$question['topic_title']]))) ?></p></div>
- <?php if($question['paragraph_content'] || $question['paragraph_media_path']): ?><article class="questionnaire-paragraph"><h3><?= qp_h($question['paragraph_title'] ?: pu('Read before answering','À lire avant de répondre')) ?></h3><div class="pu-rich"><?= qp_rich_html($question['paragraph_content'] ?? '') ?></div><?php pu_media($question['paragraph_media_type'],$question['paragraph_media_path'],$question['paragraph_title'] ?? ''); ?></article><?php endif; ?>
- <article class="question-block"><p class="points-badge"><?= qp_h(pu('Question','Question')) ?> <?= $i+1 ?> / <?= count($questions) ?> · <?= $question['points']===null ? qp_h(pu('Qualitative assessment','Évaluation qualitative')) : qp_h($question['points']).' '.qp_h(pu('points','points')) ?></p>
+<section class="pu-question-page" data-title="<?= qp_h($title) ?>" data-question-id="<?= $id ?>" data-competency="<?= qp_h($competencyKey) ?>" role="group" aria-labelledby="question_<?= $id ?>">
+ <header class="pu-competency"><p class="eyebrow"><?= qp_h($question['chapter_title'] ?: $themeName) ?></p><h2><?= qp_h($domain) ?></h2>
+ <?php if($codes): ?><p class="badge"><?= qp_h(t('qpx_code')) ?>: <?= qp_h($codes) ?></p><?php endif; ?>
+ <?php if($question['topic_title']): ?><p><?= qp_h($question['topic_title']) ?></p><?php endif; ?>
+ <p class="pu-competency-progress"></p><progress class="pu-domain-progress" value="0" max="1"></progress></header>
+ <?php if($question['paragraph_content'] || $question['paragraph_media_path']): ?><article class="questionnaire-paragraph"><h3><?= qp_h($question['paragraph_title'] ?: t('qpx_context')) ?></h3><div class="pu-rich"><?= qp_rich_html($question['paragraph_content'] ?? '') ?></div><?php pu_media($question['paragraph_media_type'],$question['paragraph_media_path'],$question['paragraph_title'] ?? ''); ?></article><?php endif; ?>
+ <article class="question-block"><p class="points-badge"><?= qp_h(t('qpx_question')) ?> <?= $i+1 ?> / <?= count($questions) ?> <span class="pu-answer-state"></span></p>
  <?php if($question['pre_question_content']): ?><div class="pu-rich questionnaire-paragraph"><?= qp_rich_html($question['pre_question_content']) ?></div><?php endif; ?>
  <h3 id="question_<?= $id ?>"><?= nl2br(qp_h($question['question_text'])) ?></h3>
- <?php pu_media($question['media_type'],$question['media_path'],pu('Exercise image','Image de l’exercice')); ?>
- <?php $wordFields=pu_word_fields($pdo,$id); if($wordFields): pu_word_controls($id,$wordFields,$values); elseif($question['question_type']==='open'): ?><label for="answer_<?= $id ?>"><?= qp_h(pu('Your answer','Votre réponse')) ?></label><textarea id="answer_<?= $id ?>" name="answers[<?= $id ?>]" rows="6" aria-labelledby="question_<?= $id ?>"><?= qp_h(is_string($values)?$values:'') ?></textarea>
- <?php else: ?><p><?= qp_h($question['question_type']==='multiple_choice'?pu('Select all applicable answers.','Sélectionnez toutes les réponses adaptées.'):pu('Select one answer.','Sélectionnez une réponse.')) ?></p>
+ <?php pu_media($question['media_type'],$question['media_path'],t('qpx_exercise_image')); ?>
+ <?php $wordFields=pu_word_fields($pdo,$id); if($wordFields): pu_word_controls($id,$wordFields,$values,true); elseif($question['question_type']==='open'): ?><label for="answer_<?= $id ?>"><?= qp_h(t('qpx_answer')) ?></label><textarea id="answer_<?= $id ?>" name="answers[<?= $id ?>]" rows="6" aria-labelledby="question_<?= $id ?>"><?= qp_h(is_string($values)?$values:'') ?></textarea>
+ <?php else: ?><p><?= qp_h($question['question_type']==='multiple_choice'?t('qpx_many'):t('qpx_one')) ?></p>
  <?php foreach($question['choices'] as $choice): ?><label class="pu-choice"><input type="<?= $question['question_type']==='single_choice'?'radio':'checkbox' ?>" name="answers[<?= $id ?>]<?= $question['question_type']==='multiple_choice'?'[]':'' ?>" value="<?= (int)$choice['id'] ?>" <?= in_array((string)$choice['id'],array_map('strval',$choiceValues),true)?'checked':'' ?>> <span><?= qp_h($choice['choice_text']) ?></span></label><?php endforeach; endif; ?>
  </article>
 </section>
 <?php endforeach; ?>
-<div class="actions pu-page-controls" hidden><button id="pu-previous" type="button" class="btn-secondary"><?= qp_h(pu('Previous','Précédent')) ?></button><span id="pu-page-position"></span><button id="pu-next" type="button"><?= qp_h(pu('Next','Suivant')) ?></button></div>
-<section class="submit-area"><h2><?= qp_h(pu('Finish your positioning test','Terminer votre test de positionnement')) ?></h2><p><?= qp_h(pu('Review unanswered questions before confirming your submission.','Vérifiez les questions sans réponse avant de confirmer votre envoi.')) ?></p><p id="pu-unanswered" aria-live="polite"></p><button type="submit" id="pu-finish"><?= qp_h(pu('Submit / Finish','Envoyer / Terminer')) ?></button></section>
+<div class="actions pu-page-controls" hidden><button id="pu-previous" type="button" class="btn-secondary"><?= qp_h(t('qpx_previous')) ?></button><span id="pu-page-position"></span><button id="pu-next" type="button"><?= qp_h(t('qpx_next')) ?></button></div>
+<section class="submit-area"><h2><?= qp_h(t('qpx_finish')) ?></h2><button type="submit" name="pu_review" value="1" formaction="<?= qp_h($draftUrl) ?>" formnovalidate><?= qp_h(t('qpx_review')) ?></button></section>
+<?php if($reviewing): ?><section class="pu-confirmation" role="region" aria-labelledby="pu-review-title"><h2 id="pu-review-title"><?= qp_h(t('qpx_review')) ?></h2><p><?= qp_h(t('qpx_summary')) ?></p><p><?= $answeredCount ?> / <?= count($questions) ?> <?= qp_h(t('qpx_answered')) ?> · <?= count($questions)-$answeredCount ?> <?= qp_h(t('qpx_unanswered')) ?></p>
+<div class="actions"><button type="submit" name="pu_save" value="1" formaction="<?= qp_h($draftUrl) ?>" formnovalidate><?= qp_h(t('qpx_return')) ?></button>
+<?php if($firstUnanswered!==null): ?><button type="submit" name="pu_incomplete" value="1" formaction="<?= qp_h($draftUrl) ?>" formnovalidate><?= qp_h(t('qpx_incomplete')) ?></button><?php endif; ?>
+<button type="submit" id="pu-finish"><?= qp_h(t('qpx_confirm')) ?></button></div></section><?php endif; ?>
+<script type="application/json" id="pu-labels"><?= json_encode(array_combine($uxLabels=['answered','unanswered','progress','competency','review'],array_map(function($key){return t('qpx_'.$key);},$uxLabels)),JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) ?></script>
 </div></div>
 </form>
 </main>

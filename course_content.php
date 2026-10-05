@@ -527,6 +527,10 @@ foreach ($contentRows as $row) {
         </ol>
     </nav>
     <main>
+        <nav class="card workflow-navigation" aria-label="<?= htmlspecialchars(t('h150_previous_and_next_course_pages'), ENT_QUOTES, 'UTF-8') ?>">
+            <a class="btn btn-secondary" href="introduction.php"><?= htmlspecialchars(t('h150_previous_introduction'), ENT_QUOTES, 'UTF-8') ?></a>
+            <a class="btn" href="assigned_questionnaires.php"><?= htmlspecialchars(t('h150_next_assigned_questionnaires'), ENT_QUOTES, 'UTF-8') ?></a>
+        </nav>
         <section class="card" aria-labelledby="learning-title">
             <p class="trainee-eyebrow"><?= htmlspecialchars(t('h150_step_4_of_7'), ENT_QUOTES, 'UTF-8') ?></p>
             <h2 id="learning-title"><?= htmlspecialchars(t('h150_learning_content'), ENT_QUOTES, 'UTF-8') ?></h2>
@@ -554,7 +558,7 @@ foreach ($contentRows as $row) {
                         <article class="course-chapter">
                             <h3><?= htmlspecialchars(t('h150_chapter_label'), ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($chapter['title']) ?></h3>
                             <?php foreach ($chapter['lessons'] as $lesson): ?>
-                                <div class="course-lesson">
+                                <div class="course-lesson" id="lesson_<?= (int)$lesson['id'] ?>">
                                     <h4><?= htmlspecialchars(t('h150_lesson_label'), ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($lesson['title']) ?></h4>
                                     <?php foreach ($lesson['topics'] as $topic): ?>
                                         <div class="course-topic">
