@@ -44,7 +44,7 @@ if($selected){
 function pu_children($rows,$key,$id){return array_filter($rows,function($row)use($key,$id){return (int)$row[$key]===(int)$id;});}
 function pu_author_question($q,$meta,$source,$puProfessor){
  global $pdo;
- echo '<article class="card"><p><span class="badge">'.qp_h($q['question_type']).'</span> · '.qp_h($q['points']).' '.qp_h(pu('points','points')).'</p><h5>'.qp_h($q['question_text']).'</h5><p>'.qp_h(pu('Question','Question')).' #'.(int)$q['id'].'</p><div class="pu-author-actions"><a href="edit_question.php?id='.(int)$q['id'].'">'.qp_h(pu('Edit question, choices, correction and media','Modifier question, choix, correction et média')).'</a></div>';
+ echo '<article class="card"><p><span class="badge">'.qp_h(pu_staff_question_label($pdo,$q['id'],$q['question_type'])).'</span> · '.qp_h($q['points']).' '.qp_h(pu('points','points')).'</p><h5>'.qp_h($q['question_text']).'</h5><p>'.qp_h(pu('Question','Question')).' #'.(int)$q['id'].'</p><div class="pu-author-actions"><a href="edit_question.php?id='.(int)$q['id'].'">'.qp_h(pu('Edit question, choices, correction and media','Modifier question, choix, correction et média')).'</a></div>';
  $m=$meta[$q['id']]??null;
  if($m)echo '<p class="badge">'.qp_h($m['competency_code'].' · '.$source['domains'][(string)$m['domain_number']]['title']).'</p>';
  echo '<form method="post">';if($puProfessor)px_csrf_field();else ux_csrf_field();
@@ -55,13 +55,15 @@ function pu_author_question($q,$meta,$source,$puProfessor){
  echo '<details><summary>'.qp_h(pu('Trainee question preview — corrections hidden','Aperçu question stagiaire — correction masquée')).'</summary><div class="pu-rich">'.pu_rich($q['pre_question_content']??'').'</div><p>'.nl2br(qp_h($q['question_text'])).'</p>';
  pu_media($q['media_type'],$q['media_path'],pu('Exercise media','Média de l’exercice'));
  $wordFields=pu_word_fields($pdo,$q['id']);
- if($wordFields){echo '<fieldset disabled>';pu_word_controls($q['id'],$wordFields,'');echo '</fieldset>';echo '<p class="badge">'.qp_h(pu('Imported source draft — verify fields, score and visual layout before publication.','Brouillon source importé — vérifiez les champs, le barème et les visuels avant publication.')).'</p>';}
+ if($wordFields){echo '<p class="badge">'.qp_h(pu('Multipart exercise — source answer types','Exercice composé — types de réponses source')).': '.qp_h(implode(' / ',array_unique(array_column($wordFields,'type')))).'</p><fieldset disabled>'; pu_word_controls($q['id'],$wordFields,'');echo '</fieldset>';echo '<p class="badge">'.qp_h(pu('Imported source draft — verify fields, score and visual layout before publication.','Brouillon source importé — vérifiez les champs, le barème et les visuels avant publication.')).'</p>';}
  elseif($q['question_type']==='open') echo '<label>'.qp_h(pu('Your answer','Votre réponse')).'<textarea rows="6" disabled></textarea></label>';
  else {
   global $pdo;$s=$pdo->prepare('SELECT choice_text FROM choices WHERE question_id=? ORDER BY display_order,id');$s->execute([$q['id']]);
   foreach($s as $choice)echo '<label class="pu-choice"><input disabled type="'.($q['question_type']==='single_choice'?'radio':'checkbox').'">'.qp_h($choice['choice_text']).'</label>';
  }
- echo '</details></article>';
+ echo '</details>';
+ pu_staff_word_correction($pdo,$q['id']);
+ echo '</article>';
 }
 ?>
 <!doctype html><html lang="<?= qp_h(htmlLanguage()) ?>"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= qp_h(pu('Course workspace','Espace cours')) ?></title><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/ui.css"><script src="../assets/js/ui.js" defer></script></head><body><div class="container">

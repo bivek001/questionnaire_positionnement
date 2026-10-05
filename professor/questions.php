@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__."/../includes/positioning_ux.php";
 require_once __DIR__ . "/../includes/question_support.php";
 require_once __DIR__ . '/professor_language.php';
 require_once __DIR__ . '/expansion_bootstrap.php';
@@ -1210,7 +1211,7 @@ $questions =
         <?php endif; ?>
     </td>
     <td>
-        <?= professorH(professorQuestionTypeLabel($question['question_type'])) ?>
+        <?= qp_h(pu_staff_question_label($pdo,$question['id'],$question['question_type'])) ?>
     </td>
     <td>
         <?= htmlspecialchars(

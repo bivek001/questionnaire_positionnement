@@ -11,6 +11,7 @@ function qp_keyword_groups(string $keywords): array {
     $groups = [];
     foreach (preg_split('/\R/u', $keywords) ?: [] as $line) {
         if (trim($line) === '') continue;
+        $line = preg_replace('/^@f[0-9]+:\s*/u', '', $line);
         $alternatives = array_values(array_filter(array_map('qp_normalize_answer', explode('|', $line)), static fn($v) => $v !== ''));
         if (!$alternatives) throw new InvalidArgumentException(t('qp_invalid_keywords'));
         $groups[] = array_values(array_unique($alternatives));
@@ -58,17 +59,30 @@ function qp_normalize_answer(string $text): string {
     return trim(preg_replace('/[^\p{L}\p{N}]+/u', ' ', $text) ?? '');
 }
 
+/** Extract only submitted values from imported multipart answers; labels are not evidence. */
+function qp_answer_values(string $answer): array {
+    if (!preg_match('/^\[f[0-9]+\] /u', $answer)) return [];
+    preg_match_all('/^\[(f[0-9]+)\][^\r\n]*\R(.*?)(?=\R\R\[f[0-9]+\]|\z)/msu', $answer, $matches, PREG_SET_ORDER);
+    $values=[];
+    foreach ($matches as $m) $values[$m[1]]=trim($m[2]);
+    return $values;
+}
+
 /** A transparent keyword coverage heuristic; never an authoritative semantic grade. */
 function qp_suggest(array $context, array $config): array {
     $max = max(0.0, (float)$context['max_points']);
     $result = ['points' => null, 'method' => 'unconfigured', 'matched' => [], 'total' => 0];
-    $answer = qp_normalize_answer($context['answer']);
+    $fieldValues = qp_answer_values($context['answer']);
+    $answer = qp_normalize_answer($fieldValues ? implode(' ', $fieldValues) : $context['answer']);
+    $rawCriteria = array_values(array_filter(preg_split('/\R/u', $context['keywords']) ?: [], static fn($line) => trim($line) !== ''));
     $groups = qp_keyword_groups($context['keywords']);
     if ($groups) {
         $matched = [];
         foreach ($groups as $i => $alternatives) {
+            $criterionAnswer=$answer;
+            if (preg_match('/^@(f[0-9]+):/u', $rawCriteria[$i] ?? '', $scope)) $criterionAnswer=qp_normalize_answer($fieldValues[$scope[1]] ?? '');
             foreach ($alternatives as $term) {
-                if (strpos(' ' . $answer . ' ', ' ' . $term . ' ') !== false) { $matched[] = $i + 1; break; }
+                if (strpos(' ' . $criterionAnswer . ' ', ' ' . $term . ' ') !== false) { $matched[] = $i + 1; break; }
             }
         }
         return ['points' => round($max * (count($matched) === 0 ? 0 : (count($matched) === count($groups) ? 1 : (count($matched) / count($groups) <= .25 ? .25 : (count($matched) / count($groups) <= .5 ? .5 : .75)))), 2), 'method' => 'criteria_bands_v3', 'matched' => $matched, 'total' => count($groups)];

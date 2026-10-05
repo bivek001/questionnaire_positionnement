@@ -23,3 +23,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['delete_question']) 
 </section>
 
 <p><?= qp_h(t('pkg_bands')) ?></p>
+
+<?php if(isset($pdo,$qpValues['id'])) { require_once __DIR__.'/positioning_ux.php'; pu_staff_word_correction($pdo,$qpValues['id']); } ?>

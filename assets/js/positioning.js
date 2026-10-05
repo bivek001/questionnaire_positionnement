@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const sync=()=>{target.value=fields.map(field=>{
    const area=field.querySelector('textarea'), value=area?area.value.trim():[...field.querySelectorAll('input:checked')].map(i=>i.value).join('\n');
-   return value?'['+field.dataset.fieldId+'] '+field.querySelector('legend').textContent+'\n'+value:'';
+   return value?'['+field.dataset.fieldId+'] '+field.querySelector('legend').textContent.replace(/\s+/g,' ')+'\n'+value:'';
   }).filter(Boolean).join('\n\n');};
   group.addEventListener('input',sync);group.addEventListener('change',sync);sync();
   target.hidden=true;target.previousElementSibling.hidden=true;

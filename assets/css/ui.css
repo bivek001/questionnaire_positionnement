@@ -87,3 +87,5 @@ body .pu-test-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:
 body .trainee-course .container{max-width:1180px}body .trainee-course header.course-header{padding:20px}body .trainee-course header.course-header p{margin:8px 0}body .trainee-course header.course-header h1{margin:8px 0 12px}body .trainee-course .question-block textarea{min-height:150px}body .trainee-course .submit-area{margin-top:24px;padding:20px}body .trainee-course .pu-question-page h2{font-size:1.25rem}body .trainee-course .pu-progress{scroll-margin-top:12px}
 
 .pu-word-fields fieldset{border:1px solid #d5dde7;border-radius:8px;padding:1rem;margin:1rem 0}.pu-word-fields legend{font-weight:600;padding:0 .3rem;max-width:100%;overflow-wrap:anywhere}.pu-word-fields textarea{width:100%;box-sizing:border-box}.pu-word-fields input:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+
+.pu-staff-correction{margin-top:1rem;border-top:1px solid #d5dde7;padding-top:.75rem}.pu-correct-answer{color:#166534;font-weight:600;white-space:normal}
