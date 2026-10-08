@@ -17,3 +17,18 @@
 !/database/migrations/
 !/database/migrations/*.sql
 /uploads/
+
+# SurveyJS dependencies (reinstall using npm)
+node_modules/
+
+# Original questionnaire documents and imported source data
+database/source/
+database/seeds/
+
+# Local SurveyJS development backups
+survey_creator_*_backup.php
+survey_test_*_backup.php
+
+# Local database installation utilities - review before publishing
+tools/install_catalogue.php
+tools/update_survey_ux.php

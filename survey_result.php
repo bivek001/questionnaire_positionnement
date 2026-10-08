@@ -1,0 +1,18 @@
+<?php
+require_once __DIR__.'/includes/survey_app.php';
+$id=(int)($_GET['id']??0);[$attempt,$staff]=sv_attempt_access($id);
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    if(!$staff)sv_fail('Correction réservée aux formateurs',403);sv_check_csrf($_POST['csrf_token']??null);
+    try{$pdo->beginTransaction();sv_row('SELECT id FROM attempts WHERE id=? FOR UPDATE',[$id]);
+        $r=sv_row('SELECT * FROM survey_question_results WHERE attempt_id=? AND id=? FOR UPDATE',[$id,(int)($_POST['result_id']??0)]);if(!$r)throw new InvalidArgumentException('Question introuvable');
+        $score=sv_number($_POST['score']??null);if($score<0||$score>(float)$r['maximum_score'])throw new InvalidArgumentException('Note hors barème');
+        $comment=$_POST['comment']??'';if(!is_string($comment)||strlen($comment)>10000)throw new InvalidArgumentException('Commentaire invalide');
+        $pdo->prepare('UPDATE survey_question_results SET manual_score=?,final_score=?,trainer_comment=?,requires_manual_grading=0,graded_at=CURRENT_TIMESTAMP WHERE id=?')->execute([$score,$score,$comment,$r['id']]);sv_recalculate($id);$pdo->commit();header('Location: survey_result.php?id='.$id);exit;
+    }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();$error=$e instanceof PDOException?'Erreur de base de données':$e->getMessage();}
+}
+$s=$pdo->prepare('SELECT * FROM survey_question_results WHERE attempt_id=? ORDER BY id');$s->execute([$id]);$rows=$s->fetchAll(PDO::FETCH_ASSOC);$tot=sv_totals($rows);$questions=[];
+foreach(sv_questions(json_decode($attempt['survey_json'],true)) as $q)$questions[$q['name']]=$q;
+?><!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Résultats du questionnaire</title><link rel="stylesheet" href="assets/survey/app.css"><main><a href="<?= $staff?'survey_results.php':'my_results.php' ?>">Retour aux résultats</a><h1><?= qp_h($attempt['title']) ?></h1><p><?= $tot['pending']?'Résultat provisoire · '.$tot['pending'].' critères à corriger':'Résultat corrigé' ?> · <?= qp_h($tot['score']) ?> / <?= qp_h($tot['maximum']) ?></p><?php if(isset($error)):?><p role="alert"><?= qp_h($error) ?></p><?php endif;?>
+<table><caption>Suivi des compétences</caption><tr><th>Compétence</th><th>Note</th><th>Évaluation</th></tr><?php foreach($tot['competencies'] as $code=>$c):?><tr><td><?= qp_h($code) ?></td><td><?= qp_h($c['score']) ?> / <?= qp_h($c['maximum_score']) ?></td><td><?= qp_h($c['level']) ?></td></tr><?php endforeach;?></table>
+<?php foreach($rows as $r):$q=$questions[$r['question_name']]??[];?><section class="question"><h2><?= qp_h($q['title']??$r['question_name']) ?></h2><pre><?= qp_h(json_encode(json_decode($r['answer_json'],true),JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT)) ?></pre><p><?= qp_h($r['final_score']) ?> / <?= qp_h($r['maximum_score']) ?> · <?= $r['requires_manual_grading']?'À corriger':'Corrigé' ?></p><p><?= qp_h($r['trainer_comment']??'') ?></p>
+<?php if($staff):?><details><summary>Barème et correction source</summary><pre><?= qp_h(($q['sourceRubric']??'')."\n".($q['teacherExplanation']??'')) ?></pre></details><form method="post"><input type="hidden" name="csrf_token" value="<?= qp_h(sv_csrf()) ?>"><input type="hidden" name="result_id" value="<?= (int)$r['id'] ?>"><label>Note <input name="score" type="number" step="0.01" min="0" max="<?= qp_h($r['maximum_score']) ?>" value="<?= qp_h($r['final_score']) ?>" required></label><label>Commentaire <textarea name="comment"><?= qp_h($r['trainer_comment']??'') ?></textarea></label><button>Valider la correction</button></form><?php endif;?></section><?php endforeach;?></main></html>

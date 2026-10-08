@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "survey-core": "^3.2.0",
+    "survey-creator-core": "^3.2.0",
+    "survey-creator-js": "^3.2.0",
+    "survey-js-ui": "^3.2.0"
+  }
+}
