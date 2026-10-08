@@ -1,4 +1,10 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['legacy'])) {
+    $questionHubRole = 'professor';
+    require __DIR__.'/../includes/survey_questions_hub.php';
+}
+?>
+<?php
 require_once __DIR__."/../includes/positioning_ux.php";
 require_once __DIR__ . "/../includes/question_support.php";
 require_once __DIR__ . '/professor_language.php';
@@ -181,7 +187,7 @@ if (
              WHERE id = ?"
         );
         $stmt->execute([$questionId]);
-        header('Location: questions.php');
+        header('Location: questions.php?legacy=1');
         exit;
     }
 }
@@ -836,7 +842,7 @@ $questions =
     method="POST"
     enctype="multipart/form-data"
     class="question-form"
-><input type="hidden" name="create_question" value="1"><?php px_csrf_field(); ?>
+><input type="hidden" name="legacy" value="1"><input type="hidden" name="create_question" value="1"><?php px_csrf_field(); ?>
 <fieldset class="question-group">
 <legend><?= professorH(t('p150i_3c82a7b13b53')) ?></legend>
 <div class="question-grid">
@@ -1237,7 +1243,7 @@ $questions =
         <form
             method="POST"
             class="question-action-form"
-        ><input type="hidden" name="toggle_question" value="1"><?php px_csrf_field(); ?>
+        ><input type="hidden" name="legacy" value="1"><input type="hidden" name="toggle_question" value="1"><?php px_csrf_field(); ?>
             <input
                 type="hidden"
                 name="question_id"
@@ -1257,7 +1263,7 @@ $questions =
         <form
             method="POST"
             class="question-action-form"
-            data-confirm="<?= professorH(t('p150i_430cc4782725')) ?><input type="hidden" name="delete_question" value="1">" onsubmit="return confirm(this.dataset.confirm);"
+            data-confirm="<?= professorH(t('p150i_430cc4782725')) ?><input type="hidden" name="legacy" value="1"><input type="hidden" name="delete_question" value="1">" onsubmit="return confirm(this.dataset.confirm);"
         ><?php px_csrf_field(); ?>
             <input
                 type="hidden"

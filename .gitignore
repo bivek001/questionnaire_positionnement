@@ -1,0 +1,19 @@
+
+/config/database.php
+.env
+.env.*
+!.env.example
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite3
+*.db
+/backups/
+/Updated Database20261005/
+/Updated SQL/
+/database/backups/
+/database/exports/
+/database/history/sql-exports/
+!/database/migrations/
+!/database/migrations/*.sql
+/uploads/

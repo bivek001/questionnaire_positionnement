@@ -1,4 +1,10 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['legacy'])) {
+    $questionHubRole = 'admin';
+    require __DIR__.'/../includes/survey_questions_hub.php';
+}
+?>
+<?php
 require_once __DIR__."/../includes/positioning_ux.php";
 require_once __DIR__ . "/../includes/question_support.php";
 require_once __DIR__ . '/../includes/language.php';
@@ -253,7 +259,7 @@ if (
 
         $stmt->execute([$questionId]);
 
-        header('Location: questions.php?lang=' . rawurlencode(currentLanguage()));
+        header('Location: questions.php?legacy=1&lang=' . rawurlencode(currentLanguage()));
         exit;
     }
 }
@@ -1150,7 +1156,7 @@ $questions =
     method="POST"
     enctype="multipart/form-data"
     class="question-form"
-><?php ux_csrf_field(); ?><input type="hidden" name="lang" value="<?= adminH(currentLanguage()) ?>">
+><input type="hidden" name="legacy" value="1"><?php ux_csrf_field(); ?><input type="hidden" name="lang" value="<?= adminH(currentLanguage()) ?>">
 
 
 <fieldset class="question-group">
@@ -1740,7 +1746,7 @@ $questions =
         <form
             method="POST"
             class="question-action-form"
-        ><?php ux_csrf_field(); ?><input type="hidden" name="lang" value="<?= adminH(currentLanguage()) ?>">
+        ><input type="hidden" name="legacy" value="1"><?php ux_csrf_field(); ?><input type="hidden" name="lang" value="<?= adminH(currentLanguage()) ?>">
 
 
             <input
@@ -1768,7 +1774,7 @@ $questions =
         <form
             method="POST"
             class="question-action-form"
-            data-confirm="<?= adminH(t('p150i_430cc4782725')) ?>
+            data-confirm="<?= adminH(t('p150i_430cc4782725')) ?><input type="hidden" name="legacy" value="1">
 " onsubmit="return confirm(this.dataset.confirm);"
         ><?php ux_csrf_field(); ?><input type="hidden" name="lang" value="<?= adminH(currentLanguage()) ?>">
 

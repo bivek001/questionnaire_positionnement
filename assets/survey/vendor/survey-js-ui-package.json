@@ -1,0 +1,67 @@
+{
+  "name": "survey-js-ui",
+  "version": "3.2.0",
+  "license": "MIT",
+  "homepage": "https://surveyjs.io/",
+  "author": "DevSoft Baltic OU <info@devsoftbaltic.com>",
+  "description": "UI component that renders dynamic, JSON-based forms and surveys in HTML/CSS/JavaScript apps, with jQuery support. You can use it to collect responses from users and send them to your own database.",
+  "keywords": [
+    "vanilla",
+    "vanilla-js",
+    "jquery",
+    "html",
+    "survey",
+    "form",
+    "surveyjs",
+    "survey-library",
+    "form-rendering",
+    "survey-renderer",
+    "dynamic-form",
+    "interactive-form",
+    "form-library",
+    "questionnaire",
+    "data-collection",
+    "data-validation",
+    "form-validation",
+    "input-validation",
+    "ui-component",
+    "json",
+    "json-schema",
+    "javascript",
+    "typescript",
+    "schema-form",
+    "conditional-logic",
+    "quiz",
+    "poll",
+    "localization",
+    "css",
+    "shadcn",
+    "mui",
+    "material-ui",
+    "bootstrap",
+    "bootswatch"
+  ],
+  "files": [
+    "**/*"
+  ],
+  "main": "survey-js-ui.js",
+  "module": "fesm/survey-js-ui.mjs",
+  "typings": "./typings/survey-js-ui/entries/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./typings/survey-js-ui/entries/index.d.ts",
+      "import": "./fesm/survey-js-ui.mjs",
+      "require": "./survey-js-ui.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/surveyjs/surveyjs.git"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "survey-core": "3.2.0",
+    "@types/react-dom": "*",
+    "@types/react": "*"
+  }
+}

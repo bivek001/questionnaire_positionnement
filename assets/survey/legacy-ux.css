@@ -1,0 +1,9 @@
+/* Preserve the existing trainee shell, spacing, navigation and theme. */
+#survey{--sjs-font-family:inherit;--sjs-general-backcolor:transparent;--sjs-general-backcolor-dim:transparent;--sjs-primary-backcolor:#2563eb;--sjs-primary-forecolor:#fff;--sjs-corner-radius:8px;background:#fff;border-radius:12px}
+#survey .sd-root-modern,#survey .sd-container-modern,#survey .sd-body,#survey .sd-body--static,#survey .sd-page{background:transparent;min-width:0;max-width:100%;padding:0}
+#survey .sd-question{box-shadow:none;border:0;margin-bottom:1.5rem}
+#survey .sd-html img{max-width:100%;height:auto}#survey .sd-html table{max-width:100%;border-collapse:collapse}#survey .sd-html td{padding:.5rem;border:1px solid #d4dae4}
+#survey .sd-multipletext__item{padding:1rem 0}#survey .sd-multipletext__item-title{white-space:normal;font-weight:600}
+#exercise-nav{width:100%;max-width:100%;margin-top:.7rem}#ux-confirmation[hidden],#exercise-nav[hidden]{display:none!important}#save-status{overflow-wrap:anywhere}
+.pu-progress progress,.pu-competency progress{width:100%}.pu-competency{margin-bottom:1rem}.pu-confirmation:focus{outline:2px solid #2563eb;outline-offset:4px}
+@media(max-width:700px){.pu-test-layout{display:block}.pu-test-navigation{position:static;margin-bottom:1rem}#survey .sd-question__content{padding:0}}

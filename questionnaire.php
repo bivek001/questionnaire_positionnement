@@ -224,6 +224,9 @@ if ($questionnaireMode === 'available') {
 }
 
 
+// Prefer a published SurveyJS definition; otherwise preserve the legacy flow.
+require __DIR__.'/includes/survey_runtime.php';
+
 // ======================================================
 // GET ACTIVE QUESTIONS WITH HIERARCHY
 // ======================================================

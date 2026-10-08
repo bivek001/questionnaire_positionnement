@@ -3,6 +3,13 @@
 session_start();
 
 require_once 'config/database.php';
+// SurveyJS attempts use the dedicated, scoped results and correction page.
+if (isset($_GET['id'])) {
+    $sv = $pdo->prepare('SELECT attempt_id FROM survey_attempt_data WHERE attempt_id=?');
+    $sv->execute([(int)$_GET['id']]);
+    if ($sv->fetchColumn()) { header('Location: survey_result.php?id='.(int)$_GET['id']); exit; }
+}
+
 require_once __DIR__ . '/includes/trainee_language.php';
 require_once 'includes/functions.php';
 

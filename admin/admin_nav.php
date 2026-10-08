@@ -8,7 +8,7 @@ $links = ['index.php'=>'dashboard', 'course.php'=>'pu_course', 'manage_pages.php
 <strong><?= adminH(t('administrator_area')) ?></strong><div class="nav-links">
 <?php foreach ($links as $url=>$key): ?><a href="<?= $url ?>?lang=<?= adminH(currentLanguage()) ?>" <?= $currentPage === $url ? 'aria-current="page"' : '' ?>><?= adminH($key === 'pu_course' ? pu('Course','Cours') : ($key === 'pu_course_results' ? pu('Course results','Résultats par cours') : t($key))) ?></a><?php endforeach; ?>
 </div><div class="nav-links"><a href="../index.php"><?= adminH(t('homepage')) ?></a><a href="logout.php"><?= adminH(t('logout')) ?></a></div>
-</nav>
+<p><a href="../survey_results.php">Résultats et corrections du questionnaire</a></p></nav>
 
 
 <?php require_once __DIR__.'/../includes/notifications.php'; if(isset($pdo)) pkg_notifications($pdo); ?>

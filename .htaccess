@@ -3,3 +3,7 @@
     Require all denied
 </FilesMatch>
 Options -Indexes
+
+<FilesMatch "^survey_.*_backup\.php$">
+    Require all denied
+</FilesMatch>
